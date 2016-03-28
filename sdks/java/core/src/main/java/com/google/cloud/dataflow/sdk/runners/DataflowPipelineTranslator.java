@@ -550,7 +550,7 @@ public class DataflowPipelineTranslator {
       currentStep.setKind(type);
       steps.add(currentStep);
       addInput(PropertyNames.USER_NAME, getFullName(transform));
-      addDisplayData(PropertyNames.DISPLAY_DATA, DisplayData.from(transform));
+      // addDisplayData(PropertyNames.DISPLAY_DATA, DisplayData.from(transform));
     }
 
     @Override
