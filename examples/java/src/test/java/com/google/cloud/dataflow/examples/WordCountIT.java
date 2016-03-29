@@ -35,7 +35,7 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class WordCountIT extends BatchE2ETest {
-  
+
   @Test
   @Category(RunnableOnService.class)
   public void testE2EWordCount() throws Exception {
@@ -44,8 +44,9 @@ public class WordCountIT extends BatchE2ETest {
         "--project=apache-beam-testing",
         "--runner=DataflowPipelineRunner",
         "--stagingLocation=gs://apache-beam-testing-storage/staging",
-        "--workerLogLevelOverrides={\"com.google.cloud.dataflow.sdk.util.UploadIdResponseInterceptor\":\"DEBUG\"}"};
-    
+        "--workerLogLevelOverrides="
+        + "{\"com.google.cloud.dataflow.sdk.util.UploadIdResponseInterceptor\":\"DEBUG\"}"};
+
     WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
         .as(WordCountOptions.class);
     Pipeline p = Pipeline.create(options);
