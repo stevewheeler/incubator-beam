@@ -45,7 +45,7 @@ public class WordCountIT extends BatchE2ETest {
     String[] args = {
         "--jobName=" + jobName,
         "--project=apache-beam-testing",
-        "--runner=DataflowPipelineRunner",
+        "--runner=BlockingDataflowPipelineRunner",
         "--stagingLocation=gs://apache-beam-testing-temp-storage/staging/" + jobName,
         "--output=gs://apache-beam-testing-temp-storage/output/" + jobName + "/results",
         "--workerLogLevelOverrides="
@@ -60,6 +60,7 @@ public class WordCountIT extends BatchE2ETest {
      .apply(MapElements.via(new FormatAsTextFn()))
      .apply(TextIO.Write.named("WriteCounts").to(options.getOutput()));
 
-    p.run();
+    PipelineResult result = p.run();
+    assertThat(result.getState()).isEqualTo(PipelineResult.State.DONE);
   }
 }
