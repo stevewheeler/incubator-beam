@@ -18,8 +18,7 @@
 
 package com.google.cloud.dataflow.examples;
 
-import com.google.cloud.dataflow.examples.WordCount.CountWords;
-import com.google.cloud.dataflow.examples.WordCount.FormatAsTextFn;
+import com.google.cloud.dataflow.examples.WordCount;
 import com.google.cloud.dataflow.examples.WordCount.WordCountOptions;
 import com.google.cloud.dataflow.sdk.Pipeline;
 import com.google.cloud.dataflow.sdk.io.TextIO;
@@ -53,14 +52,8 @@ public class WordCountIT extends BatchE2ETest {
 
     WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
         .as(WordCountOptions.class);
-    Pipeline p = Pipeline.create(options);
-
-    p.apply(TextIO.Read.named("ReadLines").from(options.getInputFile()))
-     .apply(new CountWords())
-     .apply(MapElements.via(new FormatAsTextFn()))
-     .apply(TextIO.Write.named("WriteCounts").to(options.getOutput()));
-
-    PipelineResult result = p.run();
-    assertThat(result.getState()).isEqualTo(PipelineResult.State.DONE);
+    
+    PipelineResult result = WordCount.runWorkflow(options);
+    assertEquals(PipelineResult.State.DONE, result.getState());
   }
 }
