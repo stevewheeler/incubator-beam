@@ -125,13 +125,29 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>sdks/java/core</module>
+    <module>sdks</module>
     <module>runners</module>
-    <module>examples/java</module>
-    <module>sdks/java/maven-archetypes</module>
+    <module>examples</module>
   </modules>
 
   <profiles>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <skipIntegrationTests>true</skipIntegrationTests>
+        <skipUnitTests>false</skipUnitTests>
+      </properties>
+    </profile>
+    <profile>
+      <id>IntegrationTests</id>
+      <properties>
+        <skipIntegrationTests>false</skipIntegrationTests>
+        <skipUnitTests>true</skipUnitTests>
+      </properties>
+    </profile>
     <profile>
       <id>java8-tests</id>
       <activation>
@@ -267,6 +283,7 @@
             <parallel>${testParallelValue}</parallel>
             <threadCount>4</threadCount>
             <groups>${testGroups}</groups>
+            <skipTests>${skipUnitTests}</skipTests>
             <systemPropertyVariables>
               <runIntegrationTestOnService>${runIntegrationTestOnService}</runIntegrationTestOnService>
               <projectName>${dataflowProjectName}</projectName>
