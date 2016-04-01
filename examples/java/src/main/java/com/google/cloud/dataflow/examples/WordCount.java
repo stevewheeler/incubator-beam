@@ -17,6 +17,7 @@
 package com.google.cloud.dataflow.examples;
 
 import com.google.cloud.dataflow.sdk.Pipeline;
+import com.google.cloud.dataflow.sdk.PipelineResult;
 import com.google.cloud.dataflow.sdk.io.TextIO;
 import com.google.cloud.dataflow.sdk.options.DataflowPipelineOptions;
 import com.google.cloud.dataflow.sdk.options.Default;
@@ -188,10 +189,14 @@ public class WordCount {
     }
 
   }
-
-  public static void main(String[] args) {
-    WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
-      .as(WordCountOptions.class);
+  
+  /**
+   * Runs WordCount according to the {@link WordCountOptions}
+   * 
+   * @param options WordCountOptions
+   * @return PipelineResult of the pipeline
+   */
+  public static PipelineResult runWorkflow(WordCountOptions options) {
     Pipeline p = Pipeline.create(options);
 
     // Concepts #2 and #3: Our pipeline applies the composite CountWords transform, and passes the
@@ -201,6 +206,12 @@ public class WordCount {
      .apply(MapElements.via(new FormatAsTextFn()))
      .apply(TextIO.Write.named("WriteCounts").to(options.getOutput()));
 
-    p.run();
+    return p.run();
+  }
+
+  public static void main(String[] args) {
+    WordCountOptions options = PipelineOptionsFactory.fromArgs(args).withValidation()
+      .as(WordCountOptions.class);
+    runWorkflow(options);
   }
 }
