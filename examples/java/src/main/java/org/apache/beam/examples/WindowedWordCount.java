@@ -154,7 +154,7 @@ public class WindowedWordCount {
   /**
    * Helper method that defines the BigQuery schema used for the output.
    */
-  private static TableSchema getSchema() {
+  public static TableSchema getSchema() {
     List<TableFieldSchema> fields = new ArrayList<>();
     fields.add(new TableFieldSchema().setName("word").setType("STRING"));
     fields.add(new TableFieldSchema().setName("count").setType("INTEGER"));
